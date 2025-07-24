@@ -1,26 +1,30 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+const colors = {
+  primary: "#6366F1",
+  primaryLight: "#818CF8",
+  primaryDark: "#4F46E5",
+  secondary: "#EC4899",
+  secondaryLight: "#FCE7F3",
+  accent: "#F59E0B",
+  accentLight: "#FEF3C7",
+  background: "#F8FAFC",
+  backgroundSecondary: "#F1F5F9",
+  card: "#FFFFFF",
+  cardElevated: "#FFFFFF",
+  text: "#0F172A",
+  textLight: "#64748B",
+  textMuted: "#94A3B8",
+  border: "#E2E8F0",
+  borderLight: "#F1F5F9",
+  error: "#EF4444",
+  success: "#10B981",
+  warning: "#F59E0B",
+  info: "#3B82F6",
+  gradient: {
+    primary: ["#6366F1", "#8B5CF6"] as const,
+    secondary: ["#EC4899", "#F97316"] as const,
+    success: ["#10B981", "#059669"] as const,
+    warm: ["#F59E0B", "#EF4444"] as const,
   },
 };
+
+export default colors;
