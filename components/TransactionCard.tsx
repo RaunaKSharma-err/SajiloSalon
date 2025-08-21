@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Calendar, Receipt } from "lucide-react-native";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import colors from "@/constants/Colors";
@@ -17,6 +17,8 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   onPress,
   testID,
 }) => {
+  const [showDetails, setshowDetails] = useState(false);
+
   // Format date to a readable string
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -71,31 +73,55 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           </LinearGradient>
         </View>
 
-        <View style={styles.servicesContainer}>
-          {transaction.services.slice(0, 2).map((service) => (
-            <View key={service.id} style={styles.serviceItem}>
-              <View style={styles.serviceInfo}>
-                <Text style={styles.serviceName}>{service.name}</Text>
-                {service.quantity > 1 && (
-                  <View style={styles.quantityBadge}>
-                    <Text style={styles.quantityText}>×{service.quantity}</Text>
+        <TouchableOpacity onPress={() => setshowDetails(!showDetails)}>
+          <View style={styles.servicesContainer}>
+            {showDetails
+              ? transaction.services.slice(0, 2).map((service) => (
+                  <View key={service.id} style={styles.serviceItem}>
+                    <View style={styles.serviceInfo}>
+                      <Text style={styles.serviceName}>{service.name}</Text>
+                      {service.quantity > 1 && (
+                        <View style={styles.quantityBadge}>
+                          <Text style={styles.quantityText}>
+                            ×{service.quantity}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                    <Text style={styles.servicePrice}>
+                      ${(service.price * service.quantity).toFixed(2)}
+                    </Text>
                   </View>
-                )}
-              </View>
-              <Text style={styles.servicePrice}>
-                ${(service.price * service.quantity).toFixed(2)}
-              </Text>
-            </View>
-          ))}
+                ))
+              : transaction.services.map((service) => (
+                  <View key={service.id} style={styles.serviceItem}>
+                    <View style={styles.serviceInfo}>
+                      <Text style={styles.serviceName}>{service.name}</Text>
+                      {service.quantity > 1 && (
+                        <View style={styles.quantityBadge}>
+                          <Text style={styles.quantityText}>
+                            ×{service.quantity}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                    <Text style={styles.servicePrice}>
+                      ${(service.price * service.quantity).toFixed(2)}
+                    </Text>
+                  </View>
+                ))}
 
-          {transaction.services.length > 2 && (
-            <View style={styles.moreServicesContainer}>
-              <Text style={styles.moreServices}>
-                +{transaction.services.length - 2} more services
-              </Text>
-            </View>
-          )}
-        </View>
+            {transaction.services.length > 2 && showDetails == true ? (
+              <View style={styles.moreServicesContainer}>
+                <Text style={styles.moreServices}>
+                  +{transaction.services.length - 2} more services
+                </Text>
+              </View>
+            ) : (
+              ""
+            )}
+          </View>
+        </TouchableOpacity>
       </LinearGradient>
     </TouchableOpacity>
   );

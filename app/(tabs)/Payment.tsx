@@ -4,8 +4,15 @@ import { FilterPeriod } from "@/types";
 import * as imagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { IndianRupee } from "lucide-react-native";
-import React, { useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function PaymentScreen() {
   const { isLoading } = useTransactions();
@@ -15,7 +22,7 @@ export default function PaymentScreen() {
     const image = await imagePicker.launchImageLibraryAsync({
       mediaTypes: imagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
     if (!image.canceled) {
@@ -52,11 +59,13 @@ export default function PaymentScreen() {
       </LinearGradient>
 
       {/* image Section */}
-      <View style={styles.filterContainer}>
-        {/* {if(ImageUrl) {
-          <Text>{ImageUrl}</Text>
-        }
-        } */}
+      <View style={styles.Container}>
+        <Button
+          title="Upload your Qr"
+          onPress={selectImageFromGallery}
+          color={colors.primary}
+        />
+        {ImageUrl && <Image source={{ uri: ImageUrl }} style={styles.image} />}
       </View>
     </View>
   );
@@ -72,6 +81,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  Container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background,
+  },
+  activeCategoryButton: {
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  categoryGradient: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+  },
+  image: {
+    width: 350,
+    height: 450,
+    borderRadius: 10,
+    marginTop: 20,
   },
   loadingContainer: {
     flex: 1,
