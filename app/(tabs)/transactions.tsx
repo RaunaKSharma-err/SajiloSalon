@@ -19,7 +19,7 @@ import { FilterPeriod } from "@/types";
 export default function TransactionsScreen() {
   const { isLoading } = useTransactions();
   const [activeFilter, setActiveFilter] = useState<FilterPeriod>("7days");
-  
+
   const filteredTransactions = useFilteredTransactions(activeFilter);
 
   const filters: { label: string; value: FilterPeriod }[] = [
@@ -71,7 +71,7 @@ export default function TransactionsScreen() {
             </View>
             <Text style={styles.filterTitle}>Filter Transactions</Text>
           </View>
-          
+
           <View style={styles.filterButtons}>
             {filters.map((filter) => (
               <TouchableOpacity
@@ -81,13 +81,18 @@ export default function TransactionsScreen() {
                 testID={`filter-${filter.value}`}
               >
                 <LinearGradient
-                  colors={activeFilter === filter.value ? colors.gradient.primary : [colors.backgroundSecondary, colors.backgroundSecondary]}
+                  colors={
+                    activeFilter === filter.value
+                      ? colors.gradient.primary
+                      : [colors.backgroundSecondary, colors.backgroundSecondary]
+                  }
                   style={styles.filterButton}
                 >
                   <Text
                     style={[
                       styles.filterButtonText,
-                      activeFilter === filter.value && styles.activeFilterButtonText,
+                      activeFilter === filter.value &&
+                        styles.activeFilterButtonText,
                     ]}
                   >
                     {filter.label}
@@ -104,8 +109,8 @@ export default function TransactionsScreen() {
         data={filteredTransactions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TransactionCard 
-            transaction={item} 
+          <TransactionCard
+            transaction={item}
             testID={`transaction-${item.id}`}
           />
         )}

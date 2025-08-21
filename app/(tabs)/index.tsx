@@ -1,5 +1,5 @@
-import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
+import { LinearGradient } from "expo-linear-gradient";
 import { CheckCircle, Sparkles, X } from "lucide-react-native";
 import React, { useState } from "react";
 import {
@@ -35,7 +35,10 @@ export default function ServicesScreen() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   // Get unique categories from services
-  const categories = ["All", ...Array.from(new Set(services.map((s) => s.category)))];
+  const categories = [
+    "All",
+    ...Array.from(new Set(services.map((s) => s.category))),
+  ];
 
   // Filter services by category
   const filteredServices =
@@ -81,7 +84,9 @@ export default function ServicesScreen() {
         <View style={styles.headerContent}>
           <View>
             <Text style={styles.headerTitle}>Salon Services</Text>
-            <Text style={styles.headerSubtitle}>Choose your perfect treatment</Text>
+            <Text style={styles.headerSubtitle}>
+              Choose your perfect treatment
+            </Text>
           </View>
           <View style={styles.headerIcon}>
             <Sparkles size={24} color="#fff" />
@@ -107,7 +112,11 @@ export default function ServicesScreen() {
               testID={`category-${category}`}
             >
               <LinearGradient
-                colors={activeCategory === category ? colors.gradient.secondary : [colors.backgroundSecondary, colors.backgroundSecondary]}
+                colors={
+                  activeCategory === category
+                    ? colors.gradient.secondary
+                    : [colors.backgroundSecondary, colors.backgroundSecondary]
+                }
                 style={styles.categoryGradient}
               >
                 <Text
@@ -157,7 +166,9 @@ export default function ServicesScreen() {
             style={styles.selectedServicesGradient}
           >
             <View style={styles.selectedServicesHeader}>
-              <Text style={styles.selectedServicesTitle}>Selected Services</Text>
+              <Text style={styles.selectedServicesTitle}>
+                Selected Services
+              </Text>
               <TouchableOpacity
                 onPress={clearSelection}
                 style={styles.clearButton}
@@ -172,7 +183,7 @@ export default function ServicesScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView 
+            <ScrollView
               style={styles.selectedServicesList}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.selectedServicesContent}
@@ -194,7 +205,9 @@ export default function ServicesScreen() {
                 colors={colors.gradient.success}
                 style={styles.totalAmountContainer}
               >
-                <Text style={styles.totalAmount}>${calculateTotal().toFixed(2)}</Text>
+                <Text style={styles.totalAmount}>
+                  ${calculateTotal().toFixed(2)}
+                </Text>
               </LinearGradient>
             </View>
 
@@ -209,7 +222,7 @@ export default function ServicesScreen() {
                 end={{ x: 1, y: 0 }}
                 style={styles.saveButtonGradient}
               >
-                <CheckCircle size={20} color="#fff" />
+                <CheckCircle size={25} color="#fff" />
                 <Text style={styles.saveButtonText}>Complete Transaction</Text>
               </LinearGradient>
             </TouchableOpacity>

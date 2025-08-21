@@ -13,24 +13,25 @@ interface ServiceCardProps {
   testID?: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ 
-  service, 
-  isSelected, 
+const ServiceCard: React.FC<ServiceCardProps> = ({
+  service,
+  isSelected,
   onPress,
-  testID 
+  testID,
 }) => {
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        isSelected && styles.selectedContainer
-      ]}
+      style={[styles.container, isSelected && styles.selectedContainer]}
       onPress={onPress}
       activeOpacity={0.8}
       testID={testID}
     >
       <LinearGradient
-        colors={isSelected ? [colors.card, colors.secondaryLight] : [colors.card, colors.card]}
+        colors={
+          isSelected
+            ? [colors.card, colors.secondaryLight]
+            : [colors.card, colors.card]
+        }
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradientContainer}

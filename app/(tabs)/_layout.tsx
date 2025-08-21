@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { ClipboardList, Scissors } from "lucide-react-native";
+import { ClipboardList, QrCodeIcon, Scissors } from "lucide-react-native";
 import React from "react";
 import { Platform } from "react-native";
 
@@ -47,21 +47,36 @@ export default function TabLayout() {
         options={{
           title: "Services",
           tabBarIcon: ({ color, size, focused }) => (
-            <Scissors 
-              size={focused ? (size || 24) + 2 : size || 24} 
-              color={color} 
+            <Scissors
+              size={focused ? (size || 24) + 2 : size || 24}
+              color={color}
               strokeWidth={focused ? 2.5 : 2}
             />
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="Payment"
+        options={{
+          title: "payment",
+          tabBarIcon: ({ color, size, focused }) => (
+            <QrCodeIcon
+              size={focused ? (size || 24) + 2 : size || 24}
+              color={color}
+              strokeWidth={focused ? 2.5 : 2}
+            />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="transactions"
         options={{
           title: "History",
           tabBarIcon: ({ color, size, focused }) => (
-            <ClipboardList 
-              size={focused ? (size || 24) + 2 : size || 24} 
+            <ClipboardList
+              size={focused ? (size || 24) + 2 : size || 24}
               color={color}
               strokeWidth={focused ? 2.5 : 2}
             />

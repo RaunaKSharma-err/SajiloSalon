@@ -17,7 +17,7 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
   service,
   onUpdateQuantity,
   onRemove,
-  testID
+  testID,
 }) => {
   const handleIncrement = () => {
     onUpdateQuantity(service.id, service.quantity + 1);
@@ -43,10 +43,10 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
           <Text style={styles.serviceName}>{service.name}</Text>
           <Text style={styles.servicePrice}>${service.price} each</Text>
         </View>
-        
+
         <View style={styles.quantityContainer}>
-          <TouchableOpacity 
-            style={styles.quantityButtonContainer} 
+          <TouchableOpacity
+            style={styles.quantityButtonContainer}
             onPress={handleDecrement}
             testID={`${testID}-decrement`}
           >
@@ -57,13 +57,13 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
               <Minus size={14} color="#fff" />
             </LinearGradient>
           </TouchableOpacity>
-          
+
           <View style={styles.quantityDisplay}>
             <Text style={styles.quantityText}>{service.quantity}</Text>
           </View>
-          
-          <TouchableOpacity 
-            style={styles.quantityButtonContainer} 
+
+          <TouchableOpacity
+            style={styles.quantityButtonContainer}
             onPress={handleIncrement}
             testID={`${testID}-increment`}
           >
@@ -75,7 +75,7 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
             </LinearGradient>
           </TouchableOpacity>
         </View>
-        
+
         <LinearGradient
           colors={colors.gradient.primary}
           style={styles.totalPriceContainer}

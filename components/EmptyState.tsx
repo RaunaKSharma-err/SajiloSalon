@@ -12,11 +12,11 @@ interface EmptyStateProps {
   testID?: string;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ 
-  title, 
-  message, 
+const EmptyState: React.FC<EmptyStateProps> = ({
+  title,
+  message,
   icon,
-  testID 
+  testID,
 }) => {
   return (
     <View style={styles.container} testID={testID}>

@@ -12,30 +12,31 @@ interface TransactionCardProps {
   testID?: string;
 }
 
-const TransactionCard: React.FC<TransactionCardProps> = ({ 
-  transaction, 
+const TransactionCard: React.FC<TransactionCardProps> = ({
+  transaction,
   onPress,
-  testID 
+  testID,
 }) => {
   // Format date to a readable string
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   // Count total number of services
   const serviceCount = transaction.services.reduce(
-    (count, service) => count + service.quantity, 0
+    (count, service) => count + service.quantity,
+    0
   );
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.8}
@@ -58,7 +59,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
                 <Text style={styles.date}>{formatDate(transaction.date)}</Text>
               </View>
               <Text style={styles.serviceCount}>
-                {serviceCount} {serviceCount === 1 ? 'service' : 'services'}
+                {serviceCount} {serviceCount === 1 ? "service" : "services"}
               </Text>
             </View>
           </View>
@@ -69,14 +70,12 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
             <Text style={styles.total}>${transaction.total.toFixed(2)}</Text>
           </LinearGradient>
         </View>
-        
+
         <View style={styles.servicesContainer}>
           {transaction.services.slice(0, 2).map((service) => (
             <View key={service.id} style={styles.serviceItem}>
               <View style={styles.serviceInfo}>
-                <Text style={styles.serviceName}>
-                  {service.name}
-                </Text>
+                <Text style={styles.serviceName}>{service.name}</Text>
                 {service.quantity > 1 && (
                   <View style={styles.quantityBadge}>
                     <Text style={styles.quantityText}>×{service.quantity}</Text>
@@ -88,7 +87,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
               </Text>
             </View>
           ))}
-          
+
           {transaction.services.length > 2 && (
             <View style={styles.moreServicesContainer}>
               <Text style={styles.moreServices}>
