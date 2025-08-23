@@ -1,29 +1,29 @@
 const colors = {
-  primary: "#6366F1",
-  primaryLight: "#818CF8",
-  primaryDark: "#4F46E5",
-  secondary: "#EC4899",
-  secondaryLight: "#FCE7F3",
-  accent: "#F59E0B",
-  accentLight: "#FEF3C7",
-  background: "#F8FAFC",
-  backgroundSecondary: "#F1F5F9",
-  card: "#FFFFFF",
-  cardElevated: "#FFFFFF",
-  text: "#0F172A",
-  textLight: "#64748B",
-  textMuted: "#94A3B8",
-  border: "#E2E8F0",
-  borderLight: "#F1F5F9",
-  error: "#EF4444",
-  success: "#10B981",
-  warning: "#F59E0B",
-  info: "#3B82F6",
+  primary: "#8a964c",          // wild-willow 500
+  primaryLight: "#b5be7b",     // wild-willow 300
+  primaryDark: "#535b30",      // wild-willow 700
+  secondary: "#a6b16a",        // wild-willow 400
+  secondaryLight: "#dadeb8",   // wild-willow 200
+  accent: "#f59e0b",           // keep original accent for contrast
+  accentLight: "#fef3c7",      // keep original light accent
+  background: "#f6f7ee",       // wild-willow 50
+  backgroundSecondary: "#ebedda", // wild-willow 100
+  card: "#f6f7edff",              // wild-willow 200
+  cardElevated: "#b5be7b",      // wild-willow 300
+  text: "#3b4027",              // wild-willow 900
+  textLight: "#535b30",         // wild-willow 700
+  textMuted: "#6b763a",         // wild-willow 600
+  border: "#a6b16a",            // wild-willow 400
+  borderLight: "#b5be7b",       // wild-willow 300
+  error: "#ef4444",             // keep original red
+  success: "#10b981",           // keep original green
+  warning: "#f59e0b",           // keep original warning
+  info: "#434a2a",              // wild-willow 800
   gradient: {
-    primary: ["#6366F1", "#8B5CF6"] as const,
-    secondary: ["#EC4899", "#F97316"] as const,
-    success: ["#10B981", "#059669"] as const,
-    warm: ["#F59E0B", "#EF4444"] as const,
+    primary: ["#b5be7b", "#8a964c"] as const, // light to dark wild-willow
+    secondary: ["#dadeb8", "#a6b16a"] as const,
+    success: ["#10b981", "#059669"] as const,
+    warm: ["#f59e0b", "#ef4444"] as const,
   },
 };
 

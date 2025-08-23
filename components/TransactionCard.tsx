@@ -17,7 +17,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   onPress,
   testID,
 }) => {
-  const [showDetails, setshowDetails] = useState(false);
+  const [showDetails, setshowDetails] = useState(true);
 
   // Format date to a readable string
   const formatDate = (dateString: string): string => {
@@ -66,7 +66,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
             </View>
           </View>
           <LinearGradient
-            colors={colors.gradient.success}
+            colors={colors.gradient.primary}
             style={styles.totalContainer}
           >
             <Text style={styles.total}>${transaction.total.toFixed(2)}</Text>

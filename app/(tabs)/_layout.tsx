@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { ClipboardList, QrCodeIcon, Scissors } from "lucide-react-native";
+import { ClipboardList, QrCodeIcon, Scissors, User } from "lucide-react-native";
 import React from "react";
 import { Platform } from "react-native";
 
@@ -41,6 +41,7 @@ export default function TabLayout() {
         },
         headerShown: false,
       }}
+      
     >
       <Tabs.Screen
         name="index"
@@ -76,6 +77,20 @@ export default function TabLayout() {
           title: "History",
           tabBarIcon: ({ color, size, focused }) => (
             <ClipboardList
+              size={focused ? (size || 24) + 2 : size || 24}
+              color={color}
+              strokeWidth={focused ? 2.5 : 2}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size, focused }) => (
+            <User
               size={focused ? (size || 24) + 2 : size || 24}
               color={color}
               strokeWidth={focused ? 2.5 : 2}

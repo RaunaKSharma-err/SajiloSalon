@@ -1,6 +1,6 @@
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
-import { CheckCircle, Sparkles, X } from "lucide-react-native";
+import { CheckCircle, User, X } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -20,6 +20,7 @@ import colors from "@/constants/Colors";
 import services from "@/constants/services";
 import { useTransactions } from "@/hooks/useTransactionStore";
 import { Service } from "@/types";
+import { Link } from "expo-router";
 
 export default function ServicesScreen() {
   const {
@@ -75,24 +76,18 @@ export default function ServicesScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <LinearGradient
-        colors={colors.gradient.primary}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
-      >
-        <View style={styles.headerContent}>
-          <View>
-            <Text style={styles.headerTitle}>Salon Services</Text>
-            <Text style={styles.headerSubtitle}>
-              Choose your perfect treatment
-            </Text>
-          </View>
-          <View style={styles.headerIcon}>
-            <Sparkles size={24} color="#fff" />
-          </View>
+
+      <View style={styles.headerContent}>
+        <View>
+          <Text style={styles.headerTitle}>Sajilo Salon</Text>
+          <Text style={styles.headerSubtitle}>Get Your Dream Haircut</Text>
         </View>
-      </LinearGradient>
+        <View style={styles.headerIcon}>
+          <Link href={"/(tabs)/Profile"}>
+            <User size={24} color="#fff" />
+          </Link>
+        </View>
+      </View>
 
       {/* Categories */}
       <View style={styles.categoriesContainer}>
@@ -244,15 +239,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.background,
   },
-  headerGradient: {
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-    paddingTop: 40,
-  },
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingTop: 40,
+    backgroundColor: "#8a964c",
   },
   headerTitle: {
     fontSize: 28,
@@ -353,7 +347,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   selectedServicesList: {
-    maxHeight: 80,
+    maxHeight: 170,
     marginBottom: 8,
     paddingVertical: 2,
   },

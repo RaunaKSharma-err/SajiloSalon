@@ -40,22 +40,15 @@ export default function TransactionsScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <LinearGradient
-        colors={colors.gradient.secondary}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
-      >
-        <View style={styles.headerContent}>
-          <View>
-            <Text style={styles.headerTitle}>Transaction History</Text>
-            <Text style={styles.headerSubtitle}>Track your salon business</Text>
-          </View>
-          <View style={styles.headerIcon}>
-            <TrendingUp size={24} color="#fff" />
-          </View>
+      <View style={styles.headerContent}>
+        <View>
+          <Text style={styles.headerTitle}>Transaction History</Text>
+          <Text style={styles.headerSubtitle}>Track your salon business</Text>
         </View>
-      </LinearGradient>
+        <View style={styles.headerIcon}>
+          <TrendingUp size={24} color="#fff" />
+        </View>
+      </View>
 
       {/* Filter Section */}
       <View style={styles.filterContainer}>
@@ -146,15 +139,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.background,
   },
-  headerGradient: {
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-    paddingTop: 40,
-  },
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingTop: 40,
+    backgroundColor: "#8a964c",
   },
   headerTitle: {
     fontSize: 28,
