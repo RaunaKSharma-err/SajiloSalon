@@ -80,11 +80,11 @@ export default function ServicesScreen() {
       <View style={styles.headerContent}>
         <View>
           <Text style={styles.headerTitle}>Sajilo Salon</Text>
-          <Text style={styles.headerSubtitle}>Get Your Dream Haircut</Text>
+          {/* <Text style={styles.headerSubtitle}>Get Your Dream Haircut</Text> */}
         </View>
         <View style={styles.headerIcon}>
           <Link href={"/(tabs)/Profile"}>
-            <User size={24} color="#fff" />
+            <User size={15} color="#fff" />
           </Link>
         </View>
       </View>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: 10,
     paddingTop: 40,
     backgroundColor: "#8a964c",
   },

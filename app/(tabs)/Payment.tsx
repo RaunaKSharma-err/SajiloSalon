@@ -1,9 +1,10 @@
+import EmptyState from "@/components/EmptyState";
 import colors from "@/constants/Colors";
 import { useTransactions } from "@/hooks/useTransactionStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as imagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
-import { CheckCircle, IndianRupee } from "lucide-react-native";
+import { CheckCircle, IndianRupee, QrCodeIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -57,16 +58,26 @@ export default function PaymentScreen() {
       <View style={styles.headerContent}>
         <View>
           <Text style={styles.headerTitle}>Payment </Text>
-          <Text style={styles.headerSubtitle}>Scan qr code for payment</Text>
         </View>
         <View style={styles.headerIcon}>
-          <IndianRupee size={24} color="#fff" />
+          <IndianRupee size={15} color="#fff" />
         </View>
       </View>
 
       {/* image Section */}
       <View style={styles.Container}>
-        {ImageUrl && <Image source={{ uri: ImageUrl }} style={styles.image} />}
+        {ImageUrl ? (
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.headerSubtitle}>Scan qr code for payment</Text>
+            <Image source={{ uri: ImageUrl }} style={styles.image} />
+          </View>
+        ) : (
+          <EmptyState
+            title="No QRcode uploaded"
+            message="There are no qrcode image in the selected time period."
+            icon={<QrCodeIcon size={40} color={colors.primaryLight} />}
+          />
+        )}
         <TouchableOpacity
           style={styles.saveButton}
           onPress={selectImageFromGallery}
@@ -113,7 +124,8 @@ const styles = StyleSheet.create({
     width: 400,
     height: 550,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 40,
+    marginBottom: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -126,7 +138,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: 10,
     paddingTop: 40,
     backgroundColor: "#8a964c",
   },
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 16,
-    color: "rgba(255, 255, 255, 0.8)",
+    color: colors.textMuted,
     fontWeight: "500",
   },
   headerIcon: {
@@ -201,6 +213,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginTop: 50,
+    marginBottom: 20,
     borderRadius: 16,
     overflow: "hidden",
   },

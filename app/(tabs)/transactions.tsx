@@ -42,11 +42,11 @@ export default function TransactionsScreen() {
       {/* Header */}
       <View style={styles.headerContent}>
         <View>
-          <Text style={styles.headerTitle}>Transaction History</Text>
-          <Text style={styles.headerSubtitle}>Track your salon business</Text>
+          <Text style={styles.headerTitle}>Transactions</Text>
+          {/* <Text style={styles.headerSubtitle}>Track your salon business</Text> */}
         </View>
         <View style={styles.headerIcon}>
-          <TrendingUp size={24} color="#fff" />
+          <TrendingUp size={15} color="#fff" />
         </View>
       </View>
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: 10,
     paddingTop: 40,
     backgroundColor: "#8a964c",
   },

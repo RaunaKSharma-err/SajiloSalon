@@ -25,11 +25,11 @@ export default function ProfilePage() {
       {/* Header */}
       <View style={styles.headerContent}>
         <View>
-          <Text style={styles.headerTitle}>Payment </Text>
-          <Text style={styles.headerSubtitle}>Scan qr code for payment</Text>
+          <Text style={styles.headerTitle}>Profile </Text>
+          {/* <Text style={styles.headerSubtitle}>Scan qr code for payment</Text> */}
         </View>
         <View style={styles.headerIcon}>
-          <User size={24} color="#fff" />
+          <User size={15} color="#fff" />
         </View>
       </View>
 
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: 10,
     paddingTop: 40,
     backgroundColor: "#8a964c",
   },
