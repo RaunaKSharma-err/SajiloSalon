@@ -1,17 +1,20 @@
 import colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraIcon, User } from "lucide-react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
 export default function ProfilePage() {
+  const [Edit, setEdit] = useState(false);
+  const [username, setUsername] = useState("");
   const user = {
     name: "john adam",
     email: "john@example.com",
@@ -40,7 +43,16 @@ export default function ProfilePage() {
             <CameraIcon size={20} color="#fff" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.name}>{user.name}</Text>
+        {Edit ? (
+          <TextInput
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+            placeholder="enter your nusername"
+          />
+        ) : (
+          <Text style={styles.name}>{user.name}</Text>
+        )}
         <Text style={styles.email}>{user.email}</Text>
       </View>
 
@@ -55,8 +67,8 @@ export default function ProfilePage() {
       </View>
 
       {/* Action Button */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
+      <TouchableOpacity style={styles.button} onPress={() => setEdit(!Edit)}>
+        <Text style={styles.buttonText}>{Edit ? "Save" : "Edit Profile"}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.lgbutton}>
         <Text style={styles.buttonText}>Logout</Text>
@@ -69,6 +81,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background, // was "#f9f9f9"
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 12,
+    width: 250,
+    marginTop: 10,
+    color: "black",
   },
   header: {
     alignItems: "center",
