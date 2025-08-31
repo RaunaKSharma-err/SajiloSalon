@@ -1,8 +1,8 @@
+import AuthScreen from "@/components/authentication";
 import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import Account from "../components/Account";
-import Auth from "../components/Auth";
 import { supabase } from "../lib/supabase";
 
 export default function Index() {
@@ -22,5 +22,9 @@ export default function Index() {
 
   if (session === undefined) return <View style={{ flex: 1 }} />; // loading
 
-  return session && session.user ? <Account session={session} /> : <Auth />;
+  return session && session.user ? (
+    <Account session={session} />
+  ) : (
+    <AuthScreen />
+  );
 }
