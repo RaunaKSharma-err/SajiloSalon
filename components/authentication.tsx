@@ -1,10 +1,11 @@
 import colors from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react-native";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   Alert,
+  AppState,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -15,70 +16,55 @@ import {
   View,
 } from "react-native";
 
+import { supabase } from "../lib/supabase";
+
+// Supabase auto-refresh session setup
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 type AuthMode = "signin" | "signup";
 
 export default function AuthScreen() {
   const [authMode, setAuthMode] = useState<AuthMode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
-  const handleSignIn = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
-    }
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      router.replace("/(tabs)");
-    }, 1500);
-  };
+    if (error) Alert.alert(error.message);
+    else router.replace("/(tabs)");
+    setLoading(false);
+  }
 
-  const handleSignUp = async () => {
-    if (!fullName || !email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
-    }
+  async function signUpWithEmail() {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
 
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
-      return;
-    }
-
-    if (!agreeToTerms) {
-      Alert.alert("Error", "Please agree to the terms and conditions");
-      return;
-    }
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      Alert.alert("Success", "Account created successfully!", [
-        { text: "OK", onPress: () => router.replace("/(tabs)") },
-      ]);
-    }, 1500);
-  };
-
-  const resetForm = () => {
-    setEmail("");
-    setPassword("");
-    setFullName("");
-    setConfirmPassword("");
-    setShowPassword(false);
-    setShowConfirmPassword(false);
-    setAgreeToTerms(false);
-  };
+    if (error) Alert.alert(error.message);
+    else if (session) router.replace("/(tabs)");
+    else Alert.alert("Error occured while signingup!");
+    setLoading(false);
+  }
 
   const switchAuthMode = (mode: AuthMode) => {
     setAuthMode(mode);
-    resetForm();
   };
 
   return (
@@ -145,24 +131,6 @@ export default function AuthScreen() {
 
           {/* Form */}
           <View style={styles.formContainer}>
-            {/* Full Name Input - Only for Sign Up */}
-            {authMode === "signup" && (
-              <View style={styles.inputContainer}>
-                <View style={styles.inputWrapper}>
-                  <User size={20} color="#9CA3AF" style={styles.inputIcon} />
-                  <TextInput
-                    style={styles.input}
-                    value={fullName}
-                    onChangeText={setFullName}
-                    placeholder="Full Name"
-                    placeholderTextColor="#9CA3AF"
-                    autoCapitalize="words"
-                    testID="fullname-input"
-                  />
-                </View>
-              </View>
-            )}
-
             {/* Email Input */}
             <View style={styles.inputContainer}>
               <View style={styles.inputWrapper}>
@@ -211,7 +179,7 @@ export default function AuthScreen() {
               </View>
             </View>
 
-            {/* Confirm Password Input - Only for Sign Up */}
+            {/* Confirm Password Input - Only for Sign Up
             {authMode === "signup" && (
               <View style={styles.inputContainer}>
                 <View style={styles.inputWrapper}>
@@ -238,7 +206,7 @@ export default function AuthScreen() {
                   </TouchableOpacity>
                 </View>
               </View>
-            )}
+            )} */}
 
             {/* Forgot Password - Only for Sign In */}
             {authMode === "signin" && (
@@ -247,33 +215,12 @@ export default function AuthScreen() {
               </TouchableOpacity>
             )}
 
-            {/* Terms and Conditions - Only for Sign Up */}
-            {authMode === "signup" && (
-              <TouchableOpacity
-                style={styles.termsContainer}
-                onPress={() => setAgreeToTerms(!agreeToTerms)}
-                testID="terms-checkbox"
-              >
-                <View
-                  style={[
-                    styles.checkbox,
-                    agreeToTerms && styles.checkboxChecked,
-                  ]}
-                >
-                  {agreeToTerms && <Text style={styles.checkmark}>✓</Text>}
-                </View>
-                <Text style={styles.termsText}>
-                  I agree to the{" "}
-                  <Text style={styles.termsLink}>Terms & Conditions</Text> and{" "}
-                  <Text style={styles.termsLink}>Privacy Policy</Text>
-                </Text>
-              </TouchableOpacity>
-            )}
-
             {/* Main Action Button */}
             <TouchableOpacity
               style={[styles.actionButton, isLoading && styles.buttonDisabled]}
-              onPress={authMode === "signin" ? handleSignIn : handleSignUp}
+              onPress={
+                authMode === "signin" ? signInWithEmail : signUpWithEmail
+              }
               disabled={isLoading}
               testID={authMode === "signin" ? "signin-button" : "signup-button"}
             >

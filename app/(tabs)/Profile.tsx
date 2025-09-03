@@ -1,4 +1,5 @@
 import colors from "@/constants/Colors";
+import { supabase } from "@/lib/supabase";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraIcon, User } from "lucide-react-native";
 import React, { useState } from "react";
@@ -70,7 +71,10 @@ export default function ProfilePage() {
       <TouchableOpacity style={styles.button} onPress={() => setEdit(!Edit)}>
         <Text style={styles.buttonText}>{Edit ? "Save" : "Edit Profile"}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.lgbutton}>
+      <TouchableOpacity
+        style={styles.lgbutton}
+        onPress={() => supabase.auth.signOut()}
+      >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </ScrollView>
