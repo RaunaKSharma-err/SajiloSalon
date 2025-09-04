@@ -1,43 +1,60 @@
+import { supabase } from "@/lib/supabase";
 import createContextHook from "@nkzw/create-context-hook";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { FilterPeriod, Service, SelectedService, Transaction } from "@/types";
-
-const STORAGE_KEY = "salon_transactions";
+import { FilterPeriod, SelectedService, Service, Transaction } from "@/types";
+import { Session } from "@supabase/supabase-js";
 
 export const [TransactionProvider, useTransactions] = createContextHook(() => {
   const [selectedServices, setSelectedServices] = useState<SelectedService[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+   const [session, setSession] = useState<Session | null>(null);
 
-  // Load transactions from AsyncStorage
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  
+
+  // ✅ Load transactions from Supabase
   const transactionsQuery = useQuery({
     queryKey: ["transactions"],
     queryFn: async () => {
-      try {
-        const storedData = await AsyncStorage.getItem(STORAGE_KEY);
-        if (storedData) {
-          return JSON.parse(storedData) as Transaction[];
-        }
-        return [];
-      } catch (error) {
-        console.error("Error loading transactions:", error);
+      const { data, error } = await supabase
+        .from("transactions")
+        .select("*")
+        .order("date", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching transactions:", error.message);
         return [];
       }
+      return data as Transaction[];
     }
   });
 
-  // Save transactions to AsyncStorage
+  // ✅ Save new transaction to Supabase
   const saveMutation = useMutation({
-    mutationFn: async (updatedTransactions: Transaction[]) => {
-      try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTransactions));
-        return updatedTransactions;
-      } catch (error) {
-        console.error("Error saving transactions:", error);
+    mutationFn: async (newTransaction: Transaction) => {
+      const { data, error } = await supabase.from("transactions").insert([newTransaction]);
+
+      if (error) {
+        console.error("Error saving transaction:", error.message);
         throw error;
       }
+      return data;
+    },
+    onSuccess: () => {
+      transactionsQuery.refetch(); // refresh after saving
     }
   });
 
@@ -57,12 +74,9 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
   const toggleService = (service: Service) => {
     setSelectedServices(prev => {
       const existingIndex = prev.findIndex(s => s.id === service.id);
-      
       if (existingIndex >= 0) {
-        // If service exists, remove it
         return prev.filter(s => s.id !== service.id);
       } else {
-        // If service doesn't exist, add it with quantity 1
         return [...prev, { ...service, quantity: 1 }];
       }
     });
@@ -74,12 +88,9 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
       setSelectedServices(prev => prev.filter(s => s.id !== serviceId));
       return;
     }
-
-    setSelectedServices(prev => 
-      prev.map(service => 
-        service.id === serviceId 
-          ? { ...service, quantity } 
-          : service
+    setSelectedServices(prev =>
+      prev.map(service =>
+        service.id === serviceId ? { ...service, quantity } : service
       )
     );
   };
@@ -89,47 +100,50 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
     setSelectedServices([]);
   };
 
-  // Save transaction
-  const saveTransaction = () => {
+  // ✅ Save transaction (local + Supabase)
+  const saveTransaction = async () => {
     if (selectedServices.length === 0) return;
 
+    if (!session || !session.user) {
+    console.warn("No logged in user, cannot save transaction.");
+    return;
+  }
+
     const newTransaction: Transaction = {
-      id: Date.now().toString(),
       date: new Date().toISOString(),
       services: [...selectedServices],
-      total: calculateTotal()
+      total: calculateTotal(),
+      user_id: session.user.id,
     };
 
-    const updatedTransactions = [newTransaction, ...transactions];
-    setTransactions(updatedTransactions);
-    saveMutation.mutate(updatedTransactions);
-    clearSelection();
+    // Local update for instant UI feedback
+    setTransactions([newTransaction, ...transactions]);
+
+    // Save to Supabase
+     saveMutation.mutate(newTransaction);
+     clearSelection();
   };
 
-  // Get filtered transactions based on time period
+  // Filter transactions by time period
   const getFilteredTransactions = (filter: FilterPeriod): Transaction[] => {
-    if (filter === 'all') return transactions;
-
+    if (filter === "all") return transactions;
     const now = new Date();
     let daysAgo: number;
-
     switch (filter) {
-      case '7days':
+      case "7days":
         daysAgo = 7;
         break;
-      case '15days':
+      case "15days":
         daysAgo = 15;
         break;
-      case '30days':
+      case "30days":
         daysAgo = 30;
         break;
       default:
         daysAgo = 30;
     }
-
     const cutoffDate = new Date(now);
     cutoffDate.setDate(now.getDate() - daysAgo);
-
     return transactions.filter(transaction => {
       const transactionDate = new Date(transaction.date);
       return transactionDate >= cutoffDate;
@@ -148,9 +162,3 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
     getFilteredTransactions
   };
 });
-
-// Custom hook for filtered transactions
-export function useFilteredTransactions(filter: FilterPeriod) {
-  const { getFilteredTransactions } = useTransactions();
-  return getFilteredTransactions(filter);
-}

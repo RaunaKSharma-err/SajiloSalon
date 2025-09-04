@@ -21,7 +21,9 @@ export default function TransactionsScreen() {
   const [activeFilter, setActiveFilter] = useState<FilterPeriod>("7days");
 
   const filteredTransactions = useFilteredTransactions(activeFilter);
-
+  const totalAmount = filteredTransactions.reduce((sum, transaction) => {
+    return sum + transaction.total;
+  }, 0);
   const filters: { label: string; value: FilterPeriod }[] = [
     { label: "Last 7 Days", value: "7days" },
     { label: "Last 15 Days", value: "15days" },
@@ -100,11 +102,11 @@ export default function TransactionsScreen() {
       {/* Transactions List */}
       <FlatList
         data={filteredTransactions}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.date}
         renderItem={({ item }) => (
           <TransactionCard
             transaction={item}
-            testID={`transaction-${item.id}`}
+            testID={`transaction-${item.user_id}`}
           />
         )}
         contentContainerStyle={styles.transactionsList}
@@ -113,11 +115,20 @@ export default function TransactionsScreen() {
           <EmptyState
             title="No Transactions Found"
             message="There are no transactions in the selected time period."
-            icon={<Calendar size={40} color={colors.primaryLight} />}
+            icon={<Calendar size={40} color={"white"} />}
             testID="empty-transactions"
           />
         }
       />
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalLabel}>Total Earnings</Text>
+        <LinearGradient
+          colors={colors.gradient.primary}
+          style={styles.filterButton}
+        >
+          <Text style={styles.totalAmount}>${totalAmount}</Text>
+        </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -216,5 +227,30 @@ const styles = StyleSheet.create({
   transactionsList: {
     padding: 20,
     paddingBottom: 32,
+  },
+  totalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderLight,
+    marginTop: 8,
+  },
+  totalLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.text,
+  },
+  totalAmountContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  totalAmount: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#fff",
   },
 });

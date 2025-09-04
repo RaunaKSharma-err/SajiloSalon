@@ -80,7 +80,6 @@ export default function ServicesScreen() {
       <View style={styles.headerContent}>
         <View>
           <Text style={styles.headerTitle}>Sajilo Salon</Text>
-          {/* <Text style={styles.headerSubtitle}>Get Your Dream Haircut</Text> */}
         </View>
         <View style={styles.headerIcon}>
           <Link href={"/(tabs)/Profile"}>

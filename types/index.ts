@@ -12,11 +12,11 @@ export interface SelectedService extends Service {
 }
 
 export interface Transaction {
-  id: string;
   date: string;
   services: SelectedService[];
   total: number;
   customerNote?: string;
+  user_id:string;
 }
 
 export type FilterPeriod = '7days' | '15days' | '30days' | 'all';
