@@ -1,9 +1,10 @@
 import colors from "@/constants/Colors";
-import { supabase } from "@/lib/supabase";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { CameraIcon, User } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -12,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { supabase } from "../../lib/supabase";
 
 export default function ProfilePage() {
   const [Edit, setEdit] = useState(false);
@@ -23,6 +25,28 @@ export default function ProfilePage() {
     address: "Kathmandu, Nepal",
     avatar: "https://i.pravatar.cc/307", // placeholder avatar
   };
+
+  const HandleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!session) {
+          // No active session → go to root index
+          router.replace("/(auth)/Auth");
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -71,10 +95,7 @@ export default function ProfilePage() {
       <TouchableOpacity style={styles.button} onPress={() => setEdit(!Edit)}>
         <Text style={styles.buttonText}>{Edit ? "Save" : "Edit Profile"}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.lgbutton}
-        onPress={() => supabase.auth.signOut()}
-      >
+      <TouchableOpacity style={styles.lgbutton} onPress={HandleSignOut}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </ScrollView>

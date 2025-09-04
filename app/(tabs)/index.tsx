@@ -1,8 +1,7 @@
-import { Session } from "@supabase/supabase-js";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckCircle, User, X } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -21,9 +20,9 @@ import colors from "@/constants/Colors";
 import services from "@/constants/services";
 import { useTransactions } from "@/hooks/useTransactionStore";
 import { Service } from "@/types";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 
-export default function ServicesScreen({ session }: { session: Session }) {
+export default function ServicesScreen() {
   const {
     selectedServices,
     toggleService,
@@ -33,10 +32,6 @@ export default function ServicesScreen({ session }: { session: Session }) {
     calculateTotal,
     isLoading,
   } = useTransactions();
-
-  useEffect(() => {
-    if (!session) router.replace("/");
-  }, [session]);
 
   const [activeCategory, setActiveCategory] = useState<string>("All");
 

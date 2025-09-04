@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native";
 
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 // Supabase auto-refresh session setup
 AppState.addEventListener("change", (state) => {
