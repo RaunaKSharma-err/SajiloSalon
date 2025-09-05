@@ -1,5 +1,6 @@
 import colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as imagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { CameraIcon, User } from "lucide-react-native";
@@ -42,7 +43,7 @@ export default function ProfilePage() {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("username, PhoneNumber, Address, avatar_url")
+      .select("username, PhoneNumber, Address")
       .eq("id", session.user.id)
       .single();
 
@@ -55,10 +56,6 @@ export default function ProfilePage() {
       setUsername(data.username || "");
       setPhone(data.PhoneNumber || "");
       setAddress(data.Address || "");
-      setAvatar(
-        data.avatar_url &&
-          "https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
-      );
     }
   };
 
@@ -74,7 +71,6 @@ export default function ProfilePage() {
       username,
       PhoneNumber: phone,
       Address: address,
-      avatar_url: avatar,
       updated_at: new Date(),
     });
 
@@ -96,7 +92,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetchProfile();
-
+    const loadAvatar = async () => {
+      const avatarUrl = await AsyncStorage.getItem("AvatarUrl");
+      if (avatarUrl) setAvatar(avatarUrl);
+    };
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!session) {
@@ -104,7 +103,7 @@ export default function ProfilePage() {
         }
       }
     );
-
+    loadAvatar();
     return () => {
       authListener.subscription.unsubscribe();
     };
@@ -118,8 +117,9 @@ export default function ProfilePage() {
       quality: 1,
     });
     if (!image.canceled) {
-      const qrImageUrl = image.assets[0].uri;
-      setAvatar(qrImageUrl);
+      const AvatarImageUrl = image.assets[0].uri;
+      await AsyncStorage.setItem("AvatarUrl", AvatarImageUrl);
+      setAvatar(AvatarImageUrl);
     }
   };
 

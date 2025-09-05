@@ -57,8 +57,10 @@ export default function AuthScreen() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
-    else if (session) router.replace("/(tabs)");
+    if (error) {
+      Alert.alert(error.message);
+      console.log(error);
+    } else if (session) router.replace("/(tabs)");
     else Alert.alert("Error occured while signingup!");
     setLoading(false);
   }
@@ -178,35 +180,6 @@ export default function AuthScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-
-            {/* Confirm Password Input - Only for Sign Up
-            {authMode === "signup" && (
-              <View style={styles.inputContainer}>
-                <View style={styles.inputWrapper}>
-                  <Lock size={20} color="#9CA3AF" style={styles.inputIcon} />
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    placeholder="Confirm Password"
-                    placeholderTextColor="#9CA3AF"
-                    secureTextEntry={!showConfirmPassword}
-                    testID="confirm-password-input"
-                  />
-                  <TouchableOpacity
-                    style={styles.eyeIcon}
-                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                    testID="toggle-confirm-password"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff size={20} color="#9CA3AF" />
-                    ) : (
-                      <Eye size={20} color="#9CA3AF" />
-                    )}
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )} */}
 
             {/* Forgot Password - Only for Sign In */}
             {authMode === "signin" && (
