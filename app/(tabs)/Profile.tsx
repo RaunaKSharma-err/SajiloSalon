@@ -284,10 +284,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#fff",
     marginBottom: 4,
+    marginTop: 40,
   },
   headerIcon: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     padding: 12,
     borderRadius: 20,
+    marginTop: 40,
   },
 });

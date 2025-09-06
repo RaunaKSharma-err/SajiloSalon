@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#fff",
     marginBottom: 4,
+    marginTop: 40,
   },
   headerSubtitle: {
     fontSize: 16,
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     padding: 12,
     borderRadius: 20,
+    marginTop: 40,
   },
   filterContainer: {
     shadowColor: "#000",
