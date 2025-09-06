@@ -277,7 +277,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    paddingTop: 40,
     backgroundColor: "#8a964c",
   },
   headerTitle: {
