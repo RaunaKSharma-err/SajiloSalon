@@ -133,7 +133,6 @@ export default function AuthScreen() {
 
           {/* Form */}
           <View style={styles.formContainer}>
-            {/* Email Input */}
             <View style={styles.inputContainer}>
               <View style={styles.inputWrapper}>
                 <Mail size={20} color="#9CA3AF" style={styles.inputIcon} />
